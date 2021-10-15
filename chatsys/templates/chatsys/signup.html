@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title%}
+Chat | SignUp
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <h1 class="text-center text-warning">SignUp</h1>
+    <form class="form-group offset-4 col-4" method="POST" action="{% url 'signup' %}">
+        <br>
+		{% csrf_token %}
+		<p>{{form.username}}</p>
+        {{form.username.errors}}
+        <div class=row>
+            <div class="col-6">
+            <p>{{form.firstname}}</p>
+            </div>
+        <div class="col-6">
+            <p>{{form.lastname}}</p>
+        </div>
+        {{form.firstname.errors}} {{form.lastname.errors}}
+        </div>
+        <p>{{form.email}}</p>
+        {{form.email.errors}}
+        <p>{{form.password1}}</p>
+        {{form.password1.errors}}
+        <p>{{form.password2}}</p>
+        {{form.password2.errors}}
+		<div class="text-center">
+		<input type="submit" class="btn btn-warning col-12">
+		</div>
+	</form>
+</div>
+{% endblock %}
