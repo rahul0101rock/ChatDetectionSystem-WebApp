@@ -7,6 +7,13 @@ Chat App | Home
 {% endblock %}
 
 {% block content %}
-<h1 class="text-center text-warning">Welcome <i class="fa fa-home"></i><a class="" href="/signup">SignUp</a></h1>
+<h1 class="text-center text-warning">Welcome <i class="fa fa-home"></i>
+{% if user.is_authenticated %}
+ {{ request.user }}
+<a class="text-muted" href="/logout">Logout</a>
+{% else %}
+<a class="" href="/signup">SignUp</a>
+{% endif %}
+</h1>
 
 {% endblock %}

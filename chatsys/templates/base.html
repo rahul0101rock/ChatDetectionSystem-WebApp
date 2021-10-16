@@ -20,6 +20,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand mx-4" href="/">Chat App</a>
+        <button data-bs-toggle="collapse" class="navbar-toggler mx-4" data-bs-target="#navdata">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navdata">
+            <ul class="navbar-nav ms-auto mx-4">
+            <li class="nav-item mx-4">
+                <a class="btn btn-outline-light px-4" href="/login">Login</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
     {% block content %}
     {% endblock %}
 </body>

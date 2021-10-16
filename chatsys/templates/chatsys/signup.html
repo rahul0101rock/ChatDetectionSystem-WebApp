@@ -5,7 +5,7 @@ Chat | SignUp
 
 {% block content %}
 <div class="main">
-    <h1 class="text-center text-warning">SignUp</h1>
+    <h1 class="text-center text-primary">SignUp</h1>
     <form class="form-group offset-4 col-4" method="POST" action="{% url 'signup' %}">
         <br>
 		{% csrf_token %}
@@ -13,10 +13,10 @@ Chat | SignUp
         {{form.username.errors}}
         <div class=row>
             <div class="col-6">
-            <p>{{form.firstname}}</p>
+            <p>{{form.first_name}}</p>
             </div>
         <div class="col-6">
-            <p>{{form.lastname}}</p>
+            <p>{{form.last_name}}</p>
         </div>
         {{form.firstname.errors}} {{form.lastname.errors}}
         </div>
