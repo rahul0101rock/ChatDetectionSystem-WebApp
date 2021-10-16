@@ -25,7 +25,9 @@ def signUp(request):
     		form = SignUpForm()
     	return render(request, 'chatsys/signup.html', {'form': form})
 
+
 def logOut(request):
     if request.user.is_authenticated:
     	logout(request)
     return redirect('/')
+

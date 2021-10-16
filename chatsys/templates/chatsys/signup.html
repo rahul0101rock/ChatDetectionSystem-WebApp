@@ -4,9 +4,12 @@ Chat | SignUp
 {% endblock %}
 
 {% block content %}
-<div class="main">
-    <h1 class="text-center text-primary">SignUp</h1>
-    <form class="form-group offset-4 col-4" method="POST" action="{% url 'signup' %}">
+<div >
+    <div class="card text-center w-50 mx-auto mt-5">
+        <div class="card-header">
+            <h3 class="text-center text-dark">SignUp</h3>
+        </div>
+    <form class="form-group offset-2 col-8" method="POST" action="{% url 'signup' %}">
         <br>
 		{% csrf_token %}
 		<p>{{form.username}}</p>
@@ -27,8 +30,9 @@ Chat | SignUp
         <p>{{form.password2}}</p>
         {{form.password2.errors}}
 		<div class="text-center">
-		<input type="submit" class="btn btn-warning col-12">
+		<input type="submit" class="btn btn-primary text-white col-12">
 		</div>
 	</form>
+	</div>
 </div>
 {% endblock %}
