@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title%}
+Chat | Profile
+{% endblock %}
+
+{% block content %}
+<div class="row my-5">
+    <div class="col-4">
+        <div class="text-center">
+            <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg" class="rounded-circle img-thumbnail w-70 my-3"  width="70%">
+        </div>
+        <h3 class="text-center">{{request.user}}</h3>
+    </div>
+    <div class="col-8">
+        <div class="row my-5">
+            <div class="col-6">First Name: <b>{{request.user.first_name}}</b></div>
+            <div class="col-6">Last Name: <b>{{request.user.last_name}}</b></div>
+        </div>
+        <div class="row my-2">
+            <div class="email">Email: <b>{{request.user.email}}</b></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

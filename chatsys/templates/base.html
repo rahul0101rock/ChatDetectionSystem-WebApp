@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/0a86e6dd0c.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -27,15 +28,15 @@
         <div class="collapse navbar-collapse" id="navdata">
             <ul class="navbar-nav ms-auto mx-4">
                 {% if user.is_authenticated %}
-                <li class="nav-item text-white">
-                    {{ request.user }}
+                <li class="nav-item text-white ">
+                    <a class="nav-link btn" href="/profile"><i class="fa fa-user-o"></i> {{ request.user }}</a>
                 </li>
-                <li class="nav-item mx-4">
-                    <a class="text-white" href="/logout">Logout</a>
+                <li class="nav-item mx-2">
+                    <a class="nav-link btn" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
                 </li>
                 {% else%}
-                <li class="nav-item mx-4">
-                    <a class="btn btn-outline-light px-4" href="/login">Login</a>
+                <li class="nav-item mx-2">
+                    <a class="nav-link btn" href="/login">Login <i class="fa fa-sign-in"></i></a>
                 </li>
                 {% endif %}
             </ul>

@@ -48,3 +48,6 @@ def logOut(request):
     	logout(request)
     return redirect('/')
 
+def profile(request):
+     return render(request,'chatsys/profile.html',{})
+

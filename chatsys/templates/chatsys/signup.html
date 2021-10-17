@@ -9,7 +9,7 @@ Chat | SignUp
         <div class="card-header">
             <h3 class="text-center text-dark">SignUp</h3>
         </div>
-    <form class="form-group offset-md-2 col-md-8 md-2" method="POST" action="{% url 'signup' %}">
+    <form class="form-group offset-md-2 col-md-8 md-2 py-3" method="POST" action="{% url 'signup' %}">
         <br>
 		{% csrf_token %}
 		<p>{{form.username}}</p>
@@ -30,6 +30,7 @@ Chat | SignUp
         <p>{{form.password2}}</p>
         {{form.password2.errors}}
 		<input type="submit" class="btn btn-primary text-white col-12 mb-3">
+		<a href="/login">Already have an account? Login</a>
 	</form>
 	</div>
 </div>
