@@ -4,34 +4,36 @@ Chat | SignUp
 {% endblock %}
 
 {% block content %}
-<div >
-    <div class="card text-center w-50 mx-auto mt-5">
+<div class="row mx-2">
+    <div class="col-md-6 text-center mx-auto mt-5">
         <div class="card-header">
             <h3 class="text-center text-dark">SignUp</h3>
         </div>
-    <form class="form-group offset-md-2 col-md-8 md-2 py-3" method="POST" action="{% url 'signup' %}">
-        <br>
-		{% csrf_token %}
-		<p>{{form.username}}</p>
-        {{form.username.errors}}
-        <div class=row>
+    <div class="bg-light card-body border border-light">
+        <form class="form-group col-md-10 offset-md-1 md-2 py-1" method="POST" action="{% url 'signup' %}">
+            <br>
+        	{% csrf_token %}
+        	<p>{{form.username}}</p>
+            {{form.username.errors}}
+            <div class=row>
+                <div class="col-6">
+                <p>{{form.first_name}}</p>
+                </div>
             <div class="col-6">
-            <p>{{form.first_name}}</p>
+                <p>{{form.last_name}}</p>
             </div>
-        <div class="col-6">
-            <p>{{form.last_name}}</p>
-        </div>
-        {{form.firstname.errors}} {{form.lastname.errors}}
-        </div>
-        <p>{{form.email}}</p>
-        {{form.email.errors}}
-        <p>{{form.password1}}</p>
-        {{form.password1.errors}}
-        <p>{{form.password2}}</p>
-        {{form.password2.errors}}
-		<input type="submit" class="btn btn-primary text-white col-12 mb-3">
-		<a href="/login">Already have an account? Login</a>
-	</form>
+            {{form.firstname.errors}} {{form.lastname.errors}}
+            </div>
+            <p>{{form.email}}</p>
+            {{form.email.errors}}
+            <p>{{form.password1}}</p>
+            {{form.password1.errors}}
+            <p>{{form.password2}}</p>
+            {{form.password2.errors}}
+        	<input type="submit" class="btn btn-primary text-white col-12 mb-3">
+        	<a href="/login">Already have an account? Login</a>
+        </form>
+    </div>
 	</div>
 </div>
 {% endblock %}
