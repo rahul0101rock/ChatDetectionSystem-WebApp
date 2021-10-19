@@ -16,8 +16,17 @@ Chat | Profile
             <div class="col-6">First Name: <b>{{request.user.first_name}}</b></div>
             <div class="col-6">Last Name: <b>{{request.user.last_name}}</b></div>
         </div>
-        <div class="row my-2">
-            <div class="email">Email: <b>{{request.user.email}}</b></div>
+        <div class="row my-5">
+            <div class="">Email: <b>{{request.user.email}}</b></div>
+        </div>
+        <div class="row my-5">
+            <div class="">Bio:
+                <div class="card my-2 col-9">
+                  <div class="card-body">
+                    {{bio}}
+                  </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
