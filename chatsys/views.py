@@ -2,6 +2,7 @@ import pyrebase
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib import messages
@@ -20,7 +21,12 @@ firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 
 def home(request):
-    return render(request,'chatsys/home.html',{})
+    if request.user.is_authenticated:
+        data={}
+        data["Users"]=User.objects.all()
+        return render(request,'chatsys/chat.html',data)
+    else:
+        return render(request,'chatsys/home.html',{})
 
 def signUp(request):
     if request.user.is_authenticated:
@@ -63,8 +69,11 @@ def logOut(request):
     return redirect('/')
 
 def profile(request):
-    data={}
-    data["bio"]=db.child("Bio").child(request.user).get().val()['bio']
-    data["imgurl"]="https://avatars.dicebear.com/api/initials/" +request.user.first_name+ "%20" +request.user.last_name+".svg"
-    return render(request,'chatsys/profile.html',data)
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    else:
+        data={}
+        data["bio"]=db.child("Bio").child(request.user).get().val()['bio']
+        data["imgurl"]="https://avatars.dicebear.com/api/initials/" +request.user.first_name+ "%20" +request.user.last_name+".svg"
+        return render(request,'chatsys/profile.html',data)
 

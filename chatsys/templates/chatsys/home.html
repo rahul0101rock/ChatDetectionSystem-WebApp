@@ -10,11 +10,7 @@ Chat App | Home
 <div class="bg-secondary py-5"></div>
 <div class="bg-secondary py-5">
     <h1 class="text-center text-white">Welcome
-        {% if user.is_authenticated %}
-         {{ request.user.first_name }} {{ request.user.last_name }}
-        {% else %}
         <br><a class="" href="/signup"><button class="btn btn-primary col-4 text-white mx-auto mt-5">New User Create Account Here!</button></a>
-        {% endif %}
     </h1>
 </div>
 <div class="bg-secondary py-5"></div>

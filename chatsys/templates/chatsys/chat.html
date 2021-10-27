@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title%}
+Chat App | Home
+{% endblock %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="col-md-8 offset-md-1 mt-5">
+            <input type="text" list="userlist" class="form-control">
+            <datalist id="userlist">
+                {% for u in Users %}
+                    {% if not u.username == "admin" %}
+                        <option label="{{u.first_name}} {{u.last_name}}">{{u}}</option>
+                    {% endif %}
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
+</div>
+{% endblock %}
