@@ -3,9 +3,10 @@
 
 
 <a href="http://22cse12.pythonanywhere.com/">
-<img src="https://cdn-icons.flaticon.com/png/512/5326/premium/5326108.png?token=exp=1634231545~hmac=c89db5c962c336d81a706b0e2a767533" width="15%">
+<img src="https://firebasestorage.googleapis.com/v0/b/chat-detection-system.appspot.com/o/icon_under_construction.png?alt=media&token=8eb81ffb-9a7b-4597-83d2-6a44bd27b612">
 <a> 
-
-***http://22cse12.pythonanywhere.com/***
-
+<br>
+<a href="http://22cse12.pythonanywhere.com/">
+22cse12.pythonanywhere.com <img src="https://firebasestorage.googleapis.com/v0/b/chat-detection-system.appspot.com/o/website_link_icon.png?alt=media&token=d7969a67-5e10-4a51-83b5-8692f720246b" width="15px">
+<a> 
 
