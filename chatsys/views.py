@@ -1,11 +1,12 @@
 import pyrebase
-from django.http import HttpResponse
-from django.template import loader
+#from django.http import HttpResponse
+#from django.template import loader
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib import messages
+import datetime
 # Create your views here.
 config={
   "apiKey": "AIzaSyDCem5mrJqfv3phnowuLY1EK5vIzHdiY1o",
@@ -22,8 +23,27 @@ db=firebase.database()
 
 def home(request):
     if request.user.is_authenticated:
+        if request.method == 'POST':
+            receiver = request.POST['receiver']
+            Datetime = datetime.datetime.now()
+            msg={
+                "Sender": request.user.username,
+                "Receiver": receiver,
+                "DateTime": str(Datetime),
+                "Message": "Hi...."
+            }
+            db.child("Chats").push(msg)
         data={}
-        data["Users"]=User.objects.all()
+        allusers={}
+        for u in User.objects.all():
+            if not (u.username == request.user.username or u.username == "admin"):
+                allusers[u.username]=u.first_name+" "+u.last_name
+        data["Users"]=allusers
+        msg=db.child("Chats").order_by_child("DateTime").get().val().values
+        rec=[]
+        for m in msg():
+            if m["Receiver"] == request.user.username : rec.append(m)
+        data["Chats"]=rec
         return render(request,'chatsys/chat.html',data)
     else:
         return render(request,'chatsys/home.html',{})

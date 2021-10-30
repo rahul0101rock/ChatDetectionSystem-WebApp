@@ -7,18 +7,34 @@ Chat App | Home
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-3 offset-md-1">
-        <div class="mt-5 mx-2">
-            <input type="text" list="userlist" class="form-control">
-            <datalist id="userlist">
-                {% for u in Users %}
-                    {% if not u.username == "admin" %}
-                        <option label="{{u.first_name}} {{u.last_name}}">{{u}}</option>
-                    {% endif %}
-                {% endfor %}
-            </datalist>
+<form class="container mt-3" method ="POST">
+    {% csrf_token %}
+    <div class="row mt-5">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md">
+                    <input type="text" list="userlist" class="form-control " name="receiver">
+                    <datalist id="userlist">
+                        {% for username,name in Users.items  %}
+                                <option label="{{name}}">{{username}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-md-5">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane-o"></i> Send Hi</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% for c in Chats %}
+                <div class="col-md-6 offset-md-2 alert alert-dark">
+                    {% for key,value in c.items  %}
+                    {{key}} - {{value}}
+                    <br>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     </div>
-</div>
+</form>
 {% endblock %}
