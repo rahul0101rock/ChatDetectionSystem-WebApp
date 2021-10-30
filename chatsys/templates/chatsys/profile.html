@@ -12,7 +12,8 @@ Chat | Profile
 {% endblock %}
 {% block content %}
 <h2 class="text-center mt-3">Profile</h2>
-<form class="container mt-3">
+<form class="container mt-3" method ="POST">
+    {% csrf_token %}
     <div class="row">
         <div class="col-md-4">
             <div class="text-center">
@@ -50,7 +51,19 @@ Chat | Profile
             <div class="row my-5 mx-3">
                 <label class="my-2">Bio: </label>
               <div class="form-group">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5">{{bio}}</textarea>
+                <textarea class="form-control mb-3" name="bio" rows="5">{{bio}}</textarea>
+                <div class="row">
+                    <div class="float-start col text-success">
+                        {% if messages %}
+                            {% for message in messages %}
+                            {{ message }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-success float-end">Update</button>
+                    </div>
+                </div>
               </div>
             </div>
         </div>

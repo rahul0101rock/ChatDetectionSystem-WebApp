@@ -72,6 +72,12 @@ def profile(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     else:
+        if request.method == 'POST':
+            bio = request.POST['bio']
+            db.child("Bio").child(request.user).update({"bio":bio})
+            if db.child("Bio").child(request.user).get().val()['bio']==bio:
+                messages.success(request, 'Bio Updated')
+
         data={}
         data["bio"]=db.child("Bio").child(request.user).get().val()['bio']
         data["imgurl"]="https://avatars.dicebear.com/api/initials/" +request.user.first_name+ "%20" +request.user.last_name+".svg"
