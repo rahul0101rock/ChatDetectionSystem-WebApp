@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib import messages
-import datetime
+import datetime,pytz
 # Create your views here.
 config={
   "apiKey": "AIzaSyDCem5mrJqfv3phnowuLY1EK5vIzHdiY1o",
@@ -18,35 +18,44 @@ config={
   "appId": "1:464189634762:web:a726a15005bf5edd739c33",
   "measurementId": "G-3H7P7CP7T1"
 }
+IST = pytz.timezone('Asia/Kolkata')
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 
 def home(request):
+    data={}
     if request.user.is_authenticated:
+        chats={}
         if request.method == 'POST':
             receiver = request.POST['receiver']
-            Datetime = datetime.datetime.now()
-            msg={
-                "Sender": request.user.username,
-                "Receiver": receiver,
-                "DateTime": str(Datetime),
-                "Message": "Hi...."
-            }
-            db.child("Chats").push(msg)
-        data={}
+            mk = "-".join(sorted([request.user.username,receiver]))
+            if 'sendmsg' in request.POST and request.POST['message'] :
+                message = request.POST['message']
+                Datetime = str(datetime.datetime.now(IST))
+                msg={
+                    "Sender": request.user.username,
+                    "Receiver": receiver,
+                    "dateTime": Datetime,
+                    "Message": message
+                }
+                db.child("Chats").child(mk).push(msg)
+                dbchat=chats=db.child("Chats").child(mk).get().val()
+                if dbchat:
+                    chats=dbchat.values()
+            elif 'showmsg' in request.POST:
+                dbchat=chats=db.child("Chats").child(mk).get().val()
+                if dbchat:
+                    chats=dbchat.values()
+            data["rec"]=receiver
         allusers={}
         for u in User.objects.all():
             if not (u.username == request.user.username or u.username == "admin"):
                 allusers[u.username]=u.first_name+" "+u.last_name
         data["Users"]=allusers
-        msg=db.child("Chats").order_by_child("DateTime").get().val().values
-        rec=[]
-        for m in msg():
-            if m["Receiver"] == request.user.username : rec.append(m)
-        data["Chats"]=rec
+        data["Chats"]=chats
         return render(request,'chatsys/chat.html',data)
     else:
-        return render(request,'chatsys/home.html',{})
+        return render(request,'chatsys/home.html',data)
 
 def signUp(request):
     if request.user.is_authenticated:
