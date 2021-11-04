@@ -31,7 +31,7 @@ def home(request):
             mk = "-".join(sorted([request.user.username,receiver]))
             if 'sendmsg' in request.POST and request.POST['message'] :
                 message = request.POST['message']
-                Datetime = str(datetime.datetime.now(IST))
+                Datetime = str(datetime.datetime.now(IST))[:-6]
                 msg={
                     "Sender": request.user.username,
                     "Receiver": receiver,
@@ -52,7 +52,8 @@ def home(request):
             if not (u.username == request.user.username or u.username == "admin"):
                 allusers[u.username]=u.first_name+" "+u.last_name
         data["Users"]=allusers
-        data["Chats"]=chats
+        if chats: data["Chats"]=zip(chats,[c["Sender"]==request.user.username for c in chats])
+        else: data["Chats"]=zip({},[])
         return render(request,'chatsys/chat.html',data)
     else:
         return render(request,'chatsys/home.html',data)

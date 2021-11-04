@@ -7,36 +7,46 @@ Chat App | Home
 {% endblock %}
 
 {% block content %}
-<form class="container mt-3" method ="POST">
+<form class="mx-md-4 mt-3" method ="POST">
     {% csrf_token %}
-    <div class="row mt-5">
-        <div class="col-md-3">
-            <label for="receiver">Select User</label>
+    <div class="row mt-5 mx-1">
+        <div class="col-md-2">
             <select list="userlist" class="form-control" name="receiver" required>
                 {% for username,name in Users.items  %}
                     <option label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
                 {% endfor %}
             </select>
             <button type="submit" class="btn btn-info col-12 my-2" name="showmsg"><i class="fa fa-envelope-o"></i> Show Messages</button>
-            <label for="message">Message</label>
-            <input type="text" class="form-control" name="message">
-            <button type="submit" class="btn btn-success col-12 my-2" name="sendmsg"><i class="fa fa-paper-plane-o"></i> Send Message</button>
         </div>
         <div class="col-md-9">
-            {% for c in Chats %}
-                <div class="col-md-6 offset-md-2 alert alert-primary">
-                    {% for k,v in c.items %}
-                        {% if k == "Message"%}
-                            <h3>{{v}}</h3>
-                        {% else%}
-                            <small>
-                                {{k}} - {{v}}
-                                <br>
-                            </small>
-                        {% endif %}
-                    {% endfor %}
+            {% for c,s in Chats %}
+            <div class="row mx-1">
+                {% if s %}
+                <div class="col"></div>
+                <div class="col-auto alert alert-success">
+                {% else %}
+                <div class="col-auto alert alert-primary">
+                {% endif %}
+                        {% for k,v in c.items %}
+                            {% if k == "Message"%}
+                                {{v}}
+                            {% else %}
+                                {% if k == "dateTime"%}
+                                <div class="form-text">
+                                    {{v}}
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                 </div>
+            </div>
             {% endfor %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Type Message... " name="message">
+              <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit" name="sendmsg"><i class="fa fa-paper-plane-o"></i> Send</button>
+              </div>
+            </div>
         </div>
     </div>
 </form>
