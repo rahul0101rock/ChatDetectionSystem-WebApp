@@ -7,16 +7,15 @@ Chat App | Home
 {% endblock %}
 
 {% block content %}
-<form class="mx-md-4 mt-3" method ="POST">
+<form class="mx-md-4 mt-3" method ="POST" id="msg" name="msg">
     {% csrf_token %}
     <div class="row mt-5 mx-1">
         <div class="col-md-2">
-            <select list="userlist" class="form-control" name="receiver" required>
+            <select list="userlist" class="form-control" name="receiver" id="rec_user" required>
                 {% for username,name in Users.items  %}
                     <option label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-info col-12 my-2" name="showmsg"><i class="fa fa-envelope-o"></i> Show Messages</button>
         </div>
         <div class="col-md-9">
             {% for c,s in Chats %}
@@ -50,4 +49,16 @@ Chat App | Home
         </div>
     </div>
 </form>
+
+
+<script type="text/javascript">
+    $(function(){
+         {% if not rec %} $('#msg').submit(); {% endif %}
+        $('#rec_user').change(function(){
+            $('#msg').submit();
+        });
+    });
+
+</script>
+
 {% endblock %}

@@ -29,7 +29,8 @@ def home(request):
         if request.method == 'POST':
             receiver = request.POST['receiver']
             mk = "-".join(sorted([request.user.username,receiver]))
-            if 'sendmsg' in request.POST and request.POST['message'] :
+
+            if 'sendmsg' in request.POST and request.POST['message']:
                 message = request.POST['message']
                 Datetime = str(datetime.datetime.now(IST))[:-6]
                 msg={
@@ -39,13 +40,10 @@ def home(request):
                     "Message": message
                 }
                 db.child("Chats").child(mk).push(msg)
-                dbchat=chats=db.child("Chats").child(mk).get().val()
-                if dbchat:
-                    chats=dbchat.values()
-            elif 'showmsg' in request.POST:
-                dbchat=chats=db.child("Chats").child(mk).get().val()
-                if dbchat:
-                    chats=dbchat.values()
+
+            dbchat=chats=db.child("Chats").child(mk).get().val()
+            if dbchat:
+                chats=dbchat.values()
             data["rec"]=receiver
         allusers={}
         for u in User.objects.all():
