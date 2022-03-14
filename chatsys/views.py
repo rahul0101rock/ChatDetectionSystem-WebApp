@@ -110,4 +110,3 @@ def profile(request):
         data["bio"]=db.child("Bio").child(request.user).get().val()['bio']
         data["imgurl"]="https://avatars.dicebear.com/api/initials/" +request.user.first_name+ "%20" +request.user.last_name+".svg"
         return render(request,'chatsys/profile.html',data)
-

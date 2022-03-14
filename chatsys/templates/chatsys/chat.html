@@ -3,7 +3,12 @@
 Chat App | Home
 {% endblock %}
 {% block css %}
-
+<style>
+    .chat-msg{
+        height: 78vh;
+        overflow-y: scroll;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -17,30 +22,32 @@ Chat App | Home
                 {% endfor %}
             </select>
         </div>
-        <div class="col-md-9">
-            {% for c,s in Chats %}
-            <div class="row mx-1">
-                {% if s %}
-                <div class="col"></div>
-                <div class="col-auto alert alert-success">
-                {% else %}
-                <div class="col-auto alert alert-primary">
-                {% endif %}
-                        {% for k,v in c.items %}
-                            {% if k == "Message"%}
-                                {{v}}
-                            {% else %}
-                                {% if k == "dateTime"%}
-                                <div class="form-text">
+        <div class="col-md-10">
+            <div id="chat-msg" class="chat-msg">
+                {% for c,s in Chats %}
+                <div class="row mx-1">
+                    {% if s %}
+                    <div class="col"></div>
+                    <div class="col-auto alert alert-success">
+                    {% else %}
+                    <div class="col-auto alert alert-primary">
+                    {% endif %}
+                            {% for k,v in c.items %}
+                                {% if k == "Message"%}
                                     {{v}}
-                                </div>
+                                {% else %}
+                                    {% if k == "dateTime"%}
+                                    <div class="form-text">
+                                        {{v}}
+                                    </div>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
+                            {% endfor %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-            <div class="input-group mb-3">
+            <div class="input-group mt-1 mb-3">
               <input type="text" class="form-control" placeholder="Type Message... " name="message">
               <div class="input-group-append">
                 <button class="btn btn-outline-success" type="submit" name="sendmsg"><i class="fa fa-paper-plane-o"></i> Send</button>
@@ -52,6 +59,14 @@ Chat App | Home
 
 
 <script type="text/javascript">
+
+    function scrollToBottom() {
+        let chatDiv = document.getElementById("chat-msg");
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+
+    scrollToBottom();
+
     $(function(){
          {% if not rec %} $('#msg').submit(); {% endif %}
         $('#rec_user').change(function(){
