@@ -24,6 +24,12 @@ db=firebase.database()
 
 def home(request):
     data={}
+    allusers={}
+    for u in User.objects.all():
+        if not (u.username == request.user.username or u.username == "admin"):
+            allusers[u.username]=u.first_name+" "+u.last_name
+    data["Users"]=allusers
+    data["rec"]=next(iter(allusers.values()))
     if request.user.is_authenticated:
         chats={}
         if request.method == 'POST':
@@ -45,13 +51,8 @@ def home(request):
             if dbchat:
                 chats=dbchat.values()
             data["rec"]=receiver
-        allusers={}
-        for u in User.objects.all():
-            if not (u.username == request.user.username or u.username == "admin"):
-                allusers[u.username]=u.first_name+" "+u.last_name
-        data["Users"]=allusers
-        if chats: data["Chats"]=zip(chats,[c["Sender"]==request.user.username for c in chats])
-        else: data["Chats"]=zip({},[])
+            if chats:
+                data["Chats"]=zip(chats,[c["Sender"]==request.user.username for c in chats])
         return render(request,'chatsys/chat.html',data)
     else:
         return render(request,'chatsys/home.html',data)

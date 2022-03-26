@@ -5,24 +5,27 @@ Chat App | Home
 {% block css %}
 <style>
     .chat-msg{
-        height: 78vh;
-        overflow-y: scroll;
+        height: 80vh;
+    }
+    #rec_user {
+    overflow-y: auto;
+    height: 85.5vh;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<form class="mx-md-4 mt-3" method ="POST" id="msg" name="msg">
+<form class="mx-md-4 mt-3 mx-auto" method ="POST" id="msg" name="msg">
     {% csrf_token %}
-    <div class="row mt-5 mx-1">
-        <div class="col-md-2">
-            <select list="userlist" class="form-control" name="receiver" id="rec_user" required>
+    <div class="row mt-4 mx-auto">
+        <div class="col-md-2 ms-5">
+            <select class="list-group" name="receiver" id="rec_user" size="100" required>
                 {% for username,name in Users.items  %}
-                    <option label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
+                    <option class="list-group-item list-group-item-action {% if rec == username %} active {% endif %}" label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
                 {% endfor %}
             </select>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9 ms-3">
             <div id="chat-msg" class="chat-msg">
                 {% for c,s in Chats %}
                 <div class="row mx-1">
@@ -60,15 +63,12 @@ Chat App | Home
 
 <script type="text/javascript">
 
-    function scrollToBottom() {
-        let chatDiv = document.getElementById("chat-msg");
-        chatDiv.scrollTop = chatDiv.scrollHeight;
-    }
+    new SimpleBar(document.getElementById("chat-msg"));
 
-    scrollToBottom();
+    var container = document.querySelector('#chat-msg .simplebar-content-wrapper');
+    container.scrollTo({ top: 1000000*$('#chat-msg')[0].scrollHeight, behavior: "smooth" });
 
     $(function(){
-         {% if not rec %} $('#msg').submit(); {% endif %}
         $('#rec_user').change(function(){
             $('#msg').submit();
         });
