@@ -4,9 +4,6 @@ Chat App | Home
 {% endblock %}
 {% block css %}
 <style>
-    .chat-msg{
-        height: 80vh;
-    }
     #rec_user {
         height: 85.5vh;
     }
@@ -18,6 +15,71 @@ Chat App | Home
         outline: none;
         box-shadow: none;
     }
+    * {margin: 0; box-sizing: border-box;}
+
+    .chat-msg {
+      --rad: 20px;
+      --rad-sm: 3px;
+      font: 16px/1.5 sans-serif;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      margin: auto;
+      height: 80vh;
+    }
+
+    .msg {
+      position: relative;
+      max-width: 75%;
+      padding: 7px 15px;
+      margin-bottom: 2px;
+    }
+
+    .msg.sent {
+      border-radius: var(--rad) var(--rad-sm) var(--rad-sm) var(--rad);
+      background: #42a5f5;
+      color: #fff;
+      /* moves it to the right */
+      margin-left: auto;
+    }
+
+    .msg.rcvd {
+      border-radius: var(--rad-sm) var(--rad) var(--rad) var(--rad-sm);
+      background: #f1f1f1;
+      color: #555;
+      /* moves it to the left */
+      margin-right: auto;
+    }
+
+    .msg.sent:first-child,
+    .msg.rcvd+.msg.sent {
+      border-top-right-radius: var(--rad);
+    }
+
+    .msg.rcvd:first-child,
+    .msg.sent+.msg.rcvd {
+      border-top-left-radius: var(--rad);
+    }
+
+    .msg::before {
+      content: attr(data-time);
+      font-size: 0.8rem;
+      position: absolute;
+      bottom: 100%;
+      color: #888;
+      white-space: nowrap;
+      /* Hidden by default */
+      display: none;
+    }
+
+    .msg.sent::before {
+      right: 15px;
+    }
+
+    .msg.rcvd::before {
+      left: 15px;
+    }
+
 </style>
 {% endblock %}
 
@@ -25,33 +87,45 @@ Chat App | Home
 <form class="mx-md-4 mt-3 mx-auto" method ="POST" id="msg" name="msg">
     {% csrf_token %}
     <div class="row mt-4 mx-auto">
-        <div class="col-md-2" id="rec_user" >
+        <div class="col-md-2">
+            <div class="d-none d-md-block" id="rec_user">
                 {% for username,name in Users.items  %}
                     <label style="cursor: pointer;" class="list-group-item clearfix rounded">
                         <input type="radio" name="receiver" value="{{username}}" {% if rec == username %} checked{% endif %} hidden>
                         <b class="list-group-item-heading">{{username}}</b>
                         <p class="list-group-item-text">{{name}}</p>
                     </label>
-                </select>
                {% endfor %}
+            </div>
+            <div class="d-md-none">
+                <select list="userlist" class="form-control" name="receiver" id="select_rec_user" required>
+                    {% for username,name in Users.items  %}
+                        <option label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
         <div class="col-md-10">
             <div id="chat-msg" class="chat-msg">
                 {% for c,s in Chats %}
-                <div class="row mx-1">
+                <div class="row">
                     {% if s %}
                     <div class="col"></div>
-                    <div class="col-auto alert alert-success">
-                    {% else %}
-                    <div class="col-auto alert alert-primary">
                     {% endif %}
+                    <div class="col-auto">
                             {% for k,v in c.items %}
                                 {% if k == "Message"%}
-                                    {{v}}
+                                    {% if s %}
+                                        <p class="msg sent">
+                                    {% else %}
+                                        <p class="msg rcvd">
+                                    {% endif %}
+                                            {{v}}
+                                        </p>
                                 {% else %}
                                     {% if k == "dateTime"%}
                                     <div class="form-text">
-                                        {{v}}
+                                        <small class="{% if s %}float-end{% endif %}"><pre>{{v}}</pre></small>
                                     </div>
                                     {% endif %}
                                 {% endif %}
@@ -83,6 +157,11 @@ Chat App | Home
 
     $(function(){
         $('#rec_user').click(function(){
+            const $select = document.querySelector('#select_rec_user');
+            $select.value = ''
+            $('#msg').submit();
+        });
+        $('#select_rec_user').change(function(){
             $('#msg').submit();
         });
     });

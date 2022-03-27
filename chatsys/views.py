@@ -36,15 +36,16 @@ def home(request):
             mk = "-".join(sorted([request.user.username,receiver]))
 
             if 'sendmsg' in request.POST and request.POST['message']:
-                message = request.POST['message']
-                Datetime = str(datetime.datetime.now(IST))[:-6]
-                msg={
-                    "Sender": request.user.username,
-                    "Receiver": receiver,
-                    "dateTime": Datetime,
-                    "Message": message
-                }
-                db.child("Chats").child(mk).push(msg)
+                message = request.POST['message'].strip()
+                if len(message)>0:
+                    Datetime = str(datetime.datetime.now(IST))[:-6]
+                    msg={
+                        "Sender": request.user.username,
+                        "Receiver": receiver,
+                        "dateTime": Datetime,
+                        "Message": message
+                    }
+                    db.child("Chats").child(mk).push(msg)
             dbchat=db.child("Chats").child(mk).get().val()
             if dbchat:
                 chats=dbchat.values()
