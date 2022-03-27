@@ -8,8 +8,15 @@ Chat App | Home
         height: 80vh;
     }
     #rec_user {
-    overflow-y: auto;
-    height: 85.5vh;
+        height: 85.5vh;
+    }
+    #inpChat:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    #sendBtn:focus {
+        outline: none;
+        box-shadow: none;
     }
 </style>
 {% endblock %}
@@ -18,14 +25,17 @@ Chat App | Home
 <form class="mx-md-4 mt-3 mx-auto" method ="POST" id="msg" name="msg">
     {% csrf_token %}
     <div class="row mt-4 mx-auto">
-        <div class="col-md-2 ms-5">
-            <select class="list-group" name="receiver" id="rec_user" size="100" required>
+        <div class="col-md-2" id="rec_user" >
                 {% for username,name in Users.items  %}
-                    <option class="list-group-item list-group-item-action {% if rec == username %} active {% endif %}" label="{{username}} - {{name}}" value="{{username}}" {% if rec == username %} selected{% endif %}></option>
-                {% endfor %}
-            </select>
+                    <label style="cursor: pointer;" class="list-group-item clearfix rounded">
+                        <input type="radio" name="receiver" value="{{username}}" {% if rec == username %} checked{% endif %} hidden>
+                        <b class="list-group-item-heading">{{username}}</b>
+                        <p class="list-group-item-text">{{name}}</p>
+                    </label>
+                </select>
+               {% endfor %}
         </div>
-        <div class="col-md-9 ms-3">
+        <div class="col-md-10">
             <div id="chat-msg" class="chat-msg">
                 {% for c,s in Chats %}
                 <div class="row mx-1">
@@ -46,30 +56,33 @@ Chat App | Home
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            <div class="input-group mt-1 mb-3">
-              <input type="text" class="form-control" placeholder="Type Message... " name="message">
-              <div class="input-group-append">
-                <button class="btn btn-outline-success" type="submit" name="sendmsg"><i class="fa fa-paper-plane-o"></i> Send</button>
-              </div>
+                {% if rec %}
+                <div class="input-group mt-1 mb-3" >
+                  <input type="text" class="form-control" placeholder="Type Message... " name="message" autocomplete="off" id="inpChat">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-success" type="submit" name="sendmsg" id="sendBtn"><i class="fa fa-paper-plane-o" disabled="disabled"></i> Send</button>
+                  </div>
+                </div>
+                {% endif %}
             </div>
         </div>
-    </div>
 </form>
 
 
 <script type="text/javascript">
 
     new SimpleBar(document.getElementById("chat-msg"));
+    new SimpleBar(document.getElementById("rec_user"));
 
     var container = document.querySelector('#chat-msg .simplebar-content-wrapper');
-    container.scrollTo({ top: 1000000*$('#chat-msg')[0].scrollHeight, behavior: "smooth" });
+    container.scrollTo({ top: 1000000*$('#chat-msg')[0].scrollHeight});
 
     $(function(){
-        $('#rec_user').change(function(){
+        $('#rec_user').click(function(){
             $('#msg').submit();
         });
     });

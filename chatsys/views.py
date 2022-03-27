@@ -24,13 +24,12 @@ db=firebase.database()
 
 def home(request):
     data={}
-    allusers={}
-    for u in User.objects.all():
-        if not (u.username == request.user.username or u.username == "admin"):
-            allusers[u.username]=u.first_name+" "+u.last_name
-    data["Users"]=allusers
-    data["rec"]=next(iter(allusers.values()))
     if request.user.is_authenticated:
+        allusers={}
+        for u in User.objects.all():
+            if not (u.username == request.user.username or u.username == "admin"):
+                allusers[u.username]=u.first_name+" "+u.last_name
+        data["Users"]=allusers
         chats={}
         if request.method == 'POST':
             receiver = request.POST['receiver']
@@ -46,8 +45,7 @@ def home(request):
                     "Message": message
                 }
                 db.child("Chats").child(mk).push(msg)
-
-            dbchat=chats=db.child("Chats").child(mk).get().val()
+            dbchat=db.child("Chats").child(mk).get().val()
             if dbchat:
                 chats=dbchat.values()
             data["rec"]=receiver
