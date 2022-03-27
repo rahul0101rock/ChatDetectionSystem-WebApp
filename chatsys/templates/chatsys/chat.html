@@ -156,6 +156,7 @@ Chat App | Home
     container.scrollTo({ top: 1000000*$('#chat-msg')[0].scrollHeight});
 
     $(function(){
+        {% if not rec %} $('#msg').submit(); {% endif %}
         $('#rec_user').click(function(){
             const $select = document.querySelector('#select_rec_user');
             $select.value = ''
