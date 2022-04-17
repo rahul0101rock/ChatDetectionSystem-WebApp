@@ -23,30 +23,32 @@
     <script src="https://kit.fontawesome.com/0a86e6dd0c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand mx-4" href="/">Chat App</a>
-        <button data-bs-toggle="collapse" class="navbar-toggler mx-4" data-bs-target="#navdata">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navdata">
-            <ul class="navbar-nav ms-auto mx-4">
-                {% if user.is_authenticated %}
-                <li class="nav-item text-white ">
-                    <a class="nav-link btn" href="/profile"><i class="fa fa-user-o"></i> {{ request.user }}</a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link btn" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
-                </li>
-                {% else%}
-                <li class="nav-item mx-2">
-                    <a class="nav-link btn" href="/login">Login <i class="fa fa-sign-in"></i></a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand mx-4" href="/">Chat App</a>
+            <button data-bs-toggle="collapse" class="navbar-toggler mx-4" data-bs-target="#navdata">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navdata">
+                <ul class="navbar-nav ms-auto mx-4">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item text-white ">
+                        <a class="nav-link btn" href="/profile"><i class="fa fa-user-o"></i> {{ request.user }}</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link btn" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+                    </li>
+                    {% else%}
+                    <li class="nav-item mx-2">
+                        <a class="nav-link btn" href="/login">Login <i class="fa fa-sign-in"></i></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
 
-    {% block content %}
-    {% endblock %}
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

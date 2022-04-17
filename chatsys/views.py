@@ -7,6 +7,28 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib import messages
 import datetime,pytz
+
+from nltk.classify import NaiveBayesClassifier
+from nltk.corpus import subjectivity
+from nltk.sentiment import SentimentAnalyzer
+from nltk.sentiment.util import *
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+import nltk
+nltk.download('subjectivity')
+nltk.download('vader_lexicon')
+n_instances = 100
+subj_docs = [(sent, 'subj') for sent in subjectivity.sents(categories='subj')[:n_instances]]
+obj_docs = [(sent, 'obj') for sent in subjectivity.sents(categories='obj')[:n_instances]]
+train_docs = subj_docs + obj_docs
+sentim_analyzer = SentimentAnalyzer()
+all_words_neg = sentim_analyzer.all_words([mark_negation(doc) for doc in train_docs])
+unigram_feats = sentim_analyzer.unigram_word_feats(all_words_neg, min_freq=4)
+sentim_analyzer.add_feat_extractor(extract_unigram_feats, unigrams=unigram_feats)
+training_set = sentim_analyzer.apply_features(train_docs)
+trainer = NaiveBayesClassifier.train
+classifier = sentim_analyzer.train(trainer, training_set)
+sia = SentimentIntensityAnalyzer()
 # Create your views here.
 config={
   "apiKey": "AIzaSyDCem5mrJqfv3phnowuLY1EK5vIzHdiY1o",
@@ -26,8 +48,11 @@ def home(request):
     data={}
     if request.user.is_authenticated:
         allusers={}
+        sus_users=db.child("Suspicious_users").child(request.user.username).get().val();
+        sus_users = sus_users.keys() if sus_users else []
+        data["sus"] = sus_users
         for u in User.objects.all():
-            if not (u.username == request.user.username or u.username == "admin"):
+            if not (u.username == request.user.username or u.username == "admin" or u.username in sus_users):
                 allusers[u.username]=u.first_name+" "+u.last_name
         data["Users"]=allusers
         chats={}
@@ -39,11 +64,14 @@ def home(request):
                 message = request.POST['message'].strip()
                 if len(message)>0:
                     Datetime = str(datetime.datetime.now(IST))[:-6]
+                    ss = sia.polarity_scores(message)
+                    db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True});
                     msg={
                         "Sender": request.user.username,
                         "Receiver": receiver,
                         "dateTime": Datetime,
-                        "Message": message
+                        "Message": message,
+                        "sus": ss["neg"]
                     }
                     db.child("Chats").child(mk).push(msg)
             dbchat=db.child("Chats").child(mk).get().val()

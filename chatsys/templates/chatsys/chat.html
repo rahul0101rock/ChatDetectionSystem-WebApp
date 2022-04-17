@@ -128,6 +128,17 @@ Chat App | Home
                                         <small class="{% if s %}float-end{% endif %}"><pre>{{v}}</pre></small>
                                     </div>
                                     {% endif %}
+                                    {% if k == "sus"%}
+                                    <div class="form-text">
+                                        {% if not s %}
+                                            {% if v > 0.5 %}
+                                                <div class="text-danger">
+                                                    SUS
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -158,13 +169,23 @@ Chat App | Home
     $(function(){
         {% if not rec %} $('#msg').submit(); {% endif %}
         $('#rec_user').click(function(){
-            const $select = document.querySelector('#select_rec_user');
-            $select.value = ''
-            $('#msg').submit();
+            $("#select_rec_user").val(0).change();
         });
         $('#select_rec_user').change(function(){
             $('#msg').submit();
         });
+
+        // $('#msg').submit(function(e){
+        //     $.ajax({
+        //     data: $(this).serialize(),
+        //     type: $(this).attr('method'),
+        //     url: $(this).attr('action'),
+        //     success: function(data) {
+        //         $('#content').html($(data).filter('#content'));
+        //     },
+        // });
+        // return false;
+        // });
     });
 
 </script>
