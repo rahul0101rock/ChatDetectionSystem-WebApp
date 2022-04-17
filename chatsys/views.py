@@ -65,7 +65,8 @@ def home(request):
                 if len(message)>0:
                     Datetime = str(datetime.datetime.now(IST))[:-6]
                     ss = sia.polarity_scores(message)
-                    db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True});
+                    if ss["neg"]:
+                        db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True})
                     msg={
                         "Sender": request.user.username,
                         "Receiver": receiver,
@@ -83,6 +84,50 @@ def home(request):
         return render(request,'chatsys/chat.html',data)
     else:
         return render(request,'chatsys/home.html',data)
+
+def susUsers(request):
+    if request.user.is_authenticated:
+        data={}
+        allusers={}
+        sus_users=db.child("Suspicious_users").child(request.user.username).get().val();
+        sus_users = sus_users.keys() if sus_users else []
+        for u in User.objects.all():
+            if not (u.username == request.user.username or u.username == "admin" or not u.username in sus_users):
+                allusers[u.username]=u.first_name+" "+u.last_name
+        data["Users"] = allusers
+        data["No_SUS"] = True
+        if len(allusers) == 0:
+            return render(request,'chatsys/chat.html',data)
+        chats={}
+        if request.method == 'POST':
+            receiver = request.POST['receiver']
+            mk = "-".join(sorted([request.user.username,receiver]))
+
+            if 'sendmsg' in request.POST and request.POST['message']:
+                message = request.POST['message'].strip()
+                if len(message)>0:
+                    Datetime = str(datetime.datetime.now(IST))[:-6]
+                    ss = sia.polarity_scores(message)
+                    if ss["neg"]:
+                        db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True})
+                    msg={
+                        "Sender": request.user.username,
+                        "Receiver": receiver,
+                        "dateTime": Datetime,
+                        "Message": message,
+                        "sus": ss["neg"]
+                    }
+                    db.child("Chats").child(mk).push(msg)
+            dbchat=db.child("Chats").child(mk).get().val()
+            if dbchat:
+                chats=dbchat.values()
+            data["rec"]=receiver
+            if chats:
+                data["Chats"]=zip(chats,[c["Sender"]==request.user.username for c in chats])
+        return render(request,'chatsys/chat.html',data)
+    else:
+        return redirect('/')
+
 
 def signUp(request):
     if request.user.is_authenticated:

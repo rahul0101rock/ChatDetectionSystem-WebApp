@@ -33,6 +33,9 @@
                 <ul class="navbar-nav ms-auto mx-4">
                     {% if user.is_authenticated %}
                     <li class="nav-item text-white ">
+                        <a class="nav-link btn" href="/sus_users">Suspicious Users</a>
+                    </li>
+                    <li class="nav-item text-white ">
                         <a class="nav-link btn" href="/profile"><i class="fa fa-user-o"></i> {{ request.user }}</a>
                     </li>
                     <li class="nav-item mx-2">

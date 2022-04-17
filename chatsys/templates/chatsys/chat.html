@@ -5,7 +5,7 @@ Chat App | Home
 {% block css %}
 <style>
     #rec_user {
-        height: 85.5vh;
+        height: 80.5vh;
     }
     #inpChat:focus {
         outline: none;
@@ -84,18 +84,22 @@ Chat App | Home
 {% endblock %}
 
 {% block content %}
+{% if Users %}
 <form class="mx-md-4 mt-3 mx-auto" method ="POST" id="msg" name="msg">
     {% csrf_token %}
     <div class="row mt-4 mx-auto">
         <div class="col-md-2">
-            <div class="d-none d-md-block" id="rec_user">
-                {% for username,name in Users.items  %}
-                    <label style="cursor: pointer;" class="list-group-item clearfix rounded">
-                        <input type="radio" name="receiver" value="{{username}}" {% if rec == username %} checked{% endif %} hidden>
-                        <b class="list-group-item-heading">{{username}}</b>
-                        <p class="list-group-item-text">{{name}}</p>
-                    </label>
-               {% endfor %}
+            <div class="d-none d-md-block">
+                <input type="text" class="form-control" id="searchInput" onkeyup="Search()" placeholder="Search Users..." autocomplete="off">
+                <div id="rec_user">
+                    {% for username,name in Users.items  %}
+                        <label style="cursor: pointer;" class="list-group-item clearfix rounded {% if rec == username %}active{% endif %}">
+                            <input type="radio" name="receiver" value="{{username}}" {% if rec == username %} checked{% endif %} hidden>
+                            <b class="list-group-item-heading">{{username}}</b>
+                            <p class="list-group-item-text">{{name}}</p>
+                        </label>
+                   {% endfor %}
+               </div>
             </div>
             <div class="d-md-none">
                 <select list="userlist" class="form-control" name="receiver" id="select_rec_user" required>
@@ -133,7 +137,7 @@ Chat App | Home
                                         {% if not s %}
                                             {% if v > 0.5 %}
                                                 <div class="text-danger">
-                                                    SUS
+                                                    Suspicious Message
                                                 </div>
                                             {% endif %}
                                         {% endif %}
@@ -188,6 +192,29 @@ Chat App | Home
         // });
     });
 
+    function Search() {
+        var input, ul, li, i, username;
+        input = document.getElementById("searchInput").value.toUpperCase();;
+        ul = document.getElementById("rec_user");
+        li = ul.getElementsByTagName("label");
+        for (i = 0; i < li.length; i++) {
+            username = li[i].getElementsByTagName("b")[0].textContent.toUpperCase();
+            console.log(username,input);
+            if (username.indexOf(input) > -1) {
+                li[i].style.display = "";
+
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
 </script>
+{% else %}
+<h1 class="text-secondary text-center d-flex justify-content-center chat-msg display-6">
+    No User Found
+</h1>
+
+{% endif %}
 
 {% endblock %}
