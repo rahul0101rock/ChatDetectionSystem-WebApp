@@ -3,15 +3,31 @@
 Chat App | Home
 {% endblock %}
 {% block css %}
-
 {% endblock %}
 
 {% block content %}
-<div class="bg-secondary py-5"></div>
-<div class="bg-secondary py-5">
-    <h1 class="text-center text-white">Welcome
-        <br><a class="" href="/signup"><button class="btn btn-primary col-4 text-white mx-auto mt-5">New User Create Account Here!</button></a>
-    </h1>
+<div class="container-fluid">
+  <div class="row">
+        <div class="col-md-7 mt-md-5 mt-1">
+            <h1 class="text-secondary text-center display-2">
+                Welcome!
+            </h1>
+            <h1 class="text-secondary text-center display-6" style="line-height: 200%;">
+                To Our Chat App, Which provide
+                <br>
+                <b>"Active chat monitoring"</b>
+                <br>
+                and
+                <br>
+                <b>"Suspicious Chat Detection"</b>
+            </h1>
+            <div class="text-center">
+                <a class="" href="/signup"><button class="btn btn-primary text-white px-2 mx-4">Get Started</button></a>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <img src="/media/Home_Page_Banner.jpg" class="img-fluid">
+        </div>
+    </div>
 </div>
-<div class="bg-secondary py-5"></div>
 {% endblock %}

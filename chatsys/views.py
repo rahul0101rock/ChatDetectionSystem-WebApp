@@ -63,7 +63,7 @@ def home(request):
             if 'sendmsg' in request.POST and request.POST['message']:
                 message = request.POST['message'].strip()
                 if len(message)>0:
-                    Datetime = str(datetime.datetime.now(IST))[:-6]
+                    Datetime = str(datetime.datetime.now(IST))[:-13]
                     ss = sia.polarity_scores(message)
                     if ss["neg"]:
                         db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True})
@@ -106,7 +106,7 @@ def susUsers(request):
             if 'sendmsg' in request.POST and request.POST['message']:
                 message = request.POST['message'].strip()
                 if len(message)>0:
-                    Datetime = str(datetime.datetime.now(IST))[:-6]
+                    Datetime = str(datetime.datetime.now(IST))[:-13]
                     ss = sia.polarity_scores(message)
                     if ss["neg"]:
                         db.child("Suspicious_users").child(receiver).child(request.user.username).update({"sus_user": True})

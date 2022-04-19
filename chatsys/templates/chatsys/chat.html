@@ -5,7 +5,7 @@ Chat App | Home
 {% block css %}
 <style>
     #rec_user {
-        height: 80.5vh;
+        height: 81vh;
     }
     #inpChat:focus {
         outline: none;
@@ -90,7 +90,7 @@ Chat App | Home
     <div class="row mt-4 mx-auto">
         <div class="col-md-2">
             <div class="d-none d-md-block">
-                <input type="text" class="form-control" id="searchInput" onkeyup="Search()" placeholder="Search Users..." autocomplete="off">
+                <input type="text" class="form-control" id="searchInput" onkeyup="Search()" placeholder="Search users ..." autocomplete="off">
                 <div id="rec_user">
                     {% for username,name in Users.items  %}
                         <label style="cursor: pointer;" class="list-group-item clearfix rounded {% if rec == username %}active{% endif %}">
@@ -129,16 +129,16 @@ Chat App | Home
                                 {% else %}
                                     {% if k == "dateTime"%}
                                     <div class="form-text">
-                                        <small class="{% if s %}float-end{% endif %}"><pre>{{v}}</pre></small>
+                                        <small class="{% if s %}float-end{% endif %}"><sup>{{v}}</sup></small>
                                     </div>
                                     {% endif %}
                                     {% if k == "sus"%}
                                     <div class="form-text">
                                         {% if not s %}
                                             {% if v > 0.5 %}
-                                                <div class="text-danger">
+                                                <b class="text-danger">
                                                     Suspicious Message
-                                                </div>
+                                                </b>
                                             {% endif %}
                                         {% endif %}
                                     </div>
@@ -193,10 +193,10 @@ Chat App | Home
     });
 
     function Search() {
-        var input, ul, li, i, username;
+        var input, Users, li, i, username;
         input = document.getElementById("searchInput").value.toUpperCase();;
-        ul = document.getElementById("rec_user");
-        li = ul.getElementsByTagName("label");
+        Users = document.getElementById("rec_user");
+        li = Users.getElementsByTagName("label");
         for (i = 0; i < li.length; i++) {
             username = li[i].getElementsByTagName("b")[0].textContent.toUpperCase();
             console.log(username,input);
