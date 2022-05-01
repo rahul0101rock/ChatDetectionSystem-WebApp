@@ -1,0 +1,41 @@
+<div class="chats">
+    {% if Chats %}
+        {% for c,s in Chats %}
+            <div class="row">
+            {% if s %}
+            <div class="col"></div>
+            {% endif %}
+            <div class="col-auto">
+                    {% for k,v in c.items %}
+                        {% if k == "Message"%}
+                            {% if s %}
+                                <p class="msg sent">
+                            {% else %}
+                                <p class="msg rcvd">
+                            {% endif %}
+                                    {{v}}
+                                </p>
+                        {% else %}
+                            {% if k == "dateTime"%}
+                            <div class="form-text">
+                                <small class="{% if s %}float-end{% endif %}"><sup>{{v}}</sup></small>
+                            </div>
+                            {% endif %}
+                            {% if k == "sus"%}
+                            <div class="form-text">
+                                {% if not s %}
+                                    {% if v > 0.5 %}
+                                        <b class="text-danger">
+                                            Suspicious Message
+                                        </b>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
