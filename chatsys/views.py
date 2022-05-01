@@ -87,7 +87,7 @@ def susUsers(request):
 def getMessages(request, rec):
     if request.user.is_authenticated:
         mk = "-".join(sorted([request.user.username,rec]))
-        data = {}
+        data,chats = {},{}
         dbchat=db.child("Chats").child(mk).get().val()
         if dbchat:
             chats=dbchat.values()
