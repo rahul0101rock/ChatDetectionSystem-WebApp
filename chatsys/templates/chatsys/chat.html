@@ -11,7 +11,15 @@ Chat App | Home
         outline: none;
         box-shadow: none;
     }
+    #searchInput:focus {
+        outline: none;
+        box-shadow: none;
+    }
     #sendBtn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    #markUnsuspicious:focus {
         outline: none;
         box-shadow: none;
     }
@@ -151,10 +159,15 @@ Chat App | Home
                 </div>
                 {% if rec %}
                 <div class="input-group mt-1 mb-3" >
-                  <input type="text" class="form-control" placeholder="Type Message... " name="message" autocomplete="off" id="inpChat">
+                  <input type="text" class="form-control" placeholder="Type Message... " name="message" autocomplete="off" id="inpChat" onkeyup="emptyCheck()">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-success" type="submit" name="sendmsg" id="sendBtn"><i class="fa fa-paper-plane-o" disabled="disabled"></i> Send</button>
+                    <button class="btn btn-outline-success" type="submit" name="sendmsg" id="sendBtn"><i class="fa fa-paper-plane-o"></i> Send</button>
                   </div>
+                      {% if SUS %}
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning" name="markUnsuspicious" id="markUnsuspicious">Mark Unsuspicious</button>
+                      </div>
+                      {% endif %}
                 </div>
                 {% endif %}
             </div>
@@ -166,6 +179,17 @@ Chat App | Home
 
     new SimpleBar(document.getElementById("chat-msg"));
     new SimpleBar(document.getElementById("rec_user"));
+    {% if rec %}
+        emptyCheck();
+    {% endif %}
+    function emptyCheck(){
+        if(document.getElementById("inpChat").value == ""){
+        document.getElementById("sendBtn").disabled=true;
+        }
+        else{
+            document.getElementById("sendBtn").disabled=false;
+        }
+    }
 
     var container = document.querySelector('#chat-msg .simplebar-content-wrapper');
     container.scrollTo({ top: 1000000*$('#chat-msg')[0].scrollHeight});

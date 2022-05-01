@@ -95,7 +95,7 @@ def susUsers(request):
             if not (u.username == request.user.username or u.username == "admin" or not u.username in sus_users):
                 allusers[u.username]=u.first_name+" "+u.last_name
         data["Users"] = allusers
-        data["No_SUS"] = True
+        data["SUS"] = True
         if len(allusers) == 0:
             return render(request,'chatsys/chat.html',data)
         chats={}
@@ -118,6 +118,9 @@ def susUsers(request):
                         "sus": ss["neg"]
                     }
                     db.child("Chats").child(mk).push(msg)
+            elif 'markUnsuspicious' in request.POST:
+                db.child("Suspicious_users").child(request.user.username).child(receiver).remove()
+                return redirect('/sus_users');
             dbchat=db.child("Chats").child(mk).get().val()
             if dbchat:
                 chats=dbchat.values()
