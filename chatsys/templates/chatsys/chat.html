@@ -99,6 +99,9 @@ Chat App | Home
             <form method ="POST" id="user" name="user">
                 {% csrf_token %}
                 <div class="d-none d-sm-block">
+                    {% if SUS %}
+                        <button class="btn btn-outline-warning" name="markUnsuspicious" id="markUnsuspicious" style="width:100%;">Mark Unsuspicious</button>
+                    {% endif %}
                     <input type="text" class="form-control" id="searchInput" onkeyup="Search()" placeholder="Search users ..." autocomplete="off">
                     <div id="rec_user">
                         {% for username,name in Users.items  %}
@@ -131,11 +134,7 @@ Chat App | Home
                   <div class="input-group-append">
                     <button class="btn btn-outline-success" type="submit" name="sendmsg" id="sendBtn"><i class="fa fa-paper-plane-o"></i> Send</button>
                   </div>
-                      {% if SUS %}
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-warning" name="markUnsuspicious" id="markUnsuspicious">Mark Unsuspicious</button>
-                      </div>
-                      {% endif %}
+
                 </div>
                 {% endif %}
             </form>

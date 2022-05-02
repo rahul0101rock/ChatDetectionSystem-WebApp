@@ -76,10 +76,11 @@ def susUsers(request):
             return render(request,'chatsys/chat.html',data)
         if request.method == 'POST':
             receiver = request.POST['receiver']
+            data["rec"]=receiver
             if 'markUnsuspicious' in request.POST:
                 db.child("Suspicious_users").child(request.user.username).child(receiver).remove()
                 return redirect('/sus_users');
-            data["rec"]=receiver
+
         return render(request,'chatsys/chat.html',data)
     else:
         return redirect('/')
@@ -117,7 +118,7 @@ def sendMessage(request, rec):
                 "sus": ss["neg"]
             }
             db.child("Chats").child(mk).push(msg)
-        return HttpResponse("Message Sent to "+rec);
+            return HttpResponse("Message Sent to "+rec);
     else:
         return redirect('/')
 
