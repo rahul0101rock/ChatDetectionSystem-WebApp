@@ -5,7 +5,7 @@ SafeChat | Home
 {% block css %}
 <style>
     #rec_user {
-        height: 81vh;
+        height: {% if SUS %}77vh{% else %}81vh{% endif %};
     }
     #inpChat:focus {
         outline: none;
