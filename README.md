@@ -31,3 +31,17 @@ Once `pip` has finished installing the dependencies:
 (myenv)$ python manage.py runserver
 ```
 And navigate to `http://127.0.0.1:8000/` or `http://localhost:8000/`.
+
+## Project Preview
+
+Chat Page                  |      Suspicious Chat Page
+:-------------------------:|:-------------------------:
+![Chat Page](media/chat-page.png)  |  ![Suspicious Chat Page](media/sus-msg.png)
+
+Home Page                  |              Profile Page
+:-------------------------:|:-------------------------:
+![Home Page](media/dashboard.png)  |  ![Profile Page](media/profile.png)
+
+Login Page                  |              SignUp Page
+:-------------------------:|:-------------------------:
+![Login Page](media/login.png)  |  ![SignUp Page](media/signup.png)
